@@ -3,16 +3,27 @@ import RepositoryItem from "./RepositoryItem";
 
 import "../styles/repositories.scss";
 
+interface Repository {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+}
+
 export default function RepositoryList() {
-  const [repositories, setRepositories] = useState([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  useEffect(async () => {
-    const response = await fetch(
-      "https://api.github.com/users/yan-carlosif/repos"
-    );
-    const data = await response.json();
+  useEffect(() => {
+    async function loadRepositories() {
+      const response = await fetch(
+        "https://api.github.com/users/yan-carlosif/repos"
+      );
+      const data = await response.json();
 
-    setRepositories(data);
+      setRepositories(data);
+    }
+
+    loadRepositories();
   }, []);
 
   return (
